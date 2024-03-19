@@ -19,8 +19,8 @@ var target_velocity: Vector3 = Vector3.ZERO
 
 
 func accelerate():
-	target_velocity.x = controller.direction.x * speed
-	target_velocity.z = controller.direction.z * speed
+	target_velocity.x = controller.move_vector.x * speed
+	target_velocity.z = controller.move_vector.z * speed
 
 
 func gravitate():
