@@ -1,0 +1,37 @@
+[gd_scene load_steps=8 format=3 uid="uid://c14u27uhgb4uc"]
+
+[ext_resource type="Script" path="res://Scripts/Character/Player/player_character.gd" id="1_33ydm"]
+[ext_resource type="Script" path="res://Scripts/Character/state_machine.gd" id="2_tg6la"]
+[ext_resource type="Script" path="res://Scripts/Character/Player/States/idle.gd" id="3_i5387"]
+[ext_resource type="Script" path="res://Scripts/Character/character_movement.gd" id="3_rtvu7"]
+[ext_resource type="Script" path="res://Scripts/Character/Player/player_controller.gd" id="4_syg24"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_vl4ef"]
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_04ubm"]
+
+[node name="PlayerCharacter" type="CharacterBody3D" node_paths=PackedStringArray("states")]
+script = ExtResource("1_33ydm")
+states = NodePath("States")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("CapsuleShape3D_vl4ef")
+
+[node name="Pivot" type="Node3D" parent="."]
+
+[node name="Rig" type="Node3D" parent="Pivot"]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Pivot/Rig"]
+mesh = SubResource("CapsuleMesh_04ubm")
+
+[node name="States" type="Node" parent="."]
+script = ExtResource("2_tg6la")
+
+[node name="Idle" type="Node" parent="States"]
+script = ExtResource("3_i5387")
+
+[node name="Movement" type="Node" parent="."]
+script = ExtResource("3_rtvu7")
+
+[node name="Controller" type="Node" parent="."]
+script = ExtResource("4_syg24")
