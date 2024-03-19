@@ -1,5 +1,8 @@
 class_name PlayerCharacter
-extends Character
+extends CharacterBody3D
+
+
+@export var states: StateMachine
 
 
 func _ready():
@@ -7,4 +10,4 @@ func _ready():
 
 
 func _physics_process(delta):
-	states.physics_process()
+	states.physics_process(delta)
