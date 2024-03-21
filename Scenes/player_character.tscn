@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://c14u27uhgb4uc"]
+[gd_scene load_steps=12 format=3 uid="uid://c14u27uhgb4uc"]
 
 [ext_resource type="Script" path="res://Scripts/Player/player_character.gd" id="1_33ydm"]
 [ext_resource type="Script" path="res://Scripts/Player/state_machine.gd" id="2_tg6la"]
@@ -8,6 +8,7 @@
 [ext_resource type="Script" path="res://Scripts/Player/States/running.gd" id="4_tfpp1"]
 [ext_resource type="Script" path="res://Scripts/Player/States/jumping.gd" id="5_bydvt"]
 [ext_resource type="Script" path="res://Scripts/Player/debug.gd" id="6_g6weh"]
+[ext_resource type="Script" path="res://Scripts/Player/States/falling.gd" id="6_ton4o"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_vl4ef"]
 
@@ -33,18 +34,26 @@ controller = NodePath("../Controller")
 movement = NodePath("../Movement")
 default_state = NodePath("Idle")
 
-[node name="Idle" type="Node" parent="States" node_paths=PackedStringArray("running", "jumping")]
+[node name="Idle" type="Node" parent="States" node_paths=PackedStringArray("running", "jumping", "falling")]
 script = ExtResource("3_i5387")
 running = NodePath("../Running")
 jumping = NodePath("../Jumping")
+falling = NodePath("../Falling")
 
-[node name="Running" type="Node" parent="States" node_paths=PackedStringArray("idle", "jumping")]
+[node name="Running" type="Node" parent="States" node_paths=PackedStringArray("idle", "jumping", "falling")]
 script = ExtResource("4_tfpp1")
 idle = NodePath("../Idle")
 jumping = NodePath("../Jumping")
+falling = NodePath(".")
 
-[node name="Jumping" type="Node" parent="States" node_paths=PackedStringArray("idle", "running")]
+[node name="Jumping" type="Node" parent="States" node_paths=PackedStringArray("idle", "running", "falling")]
 script = ExtResource("5_bydvt")
+idle = NodePath("../Idle")
+running = NodePath("../Running")
+falling = NodePath("../Falling")
+
+[node name="Falling" type="Node" parent="States" node_paths=PackedStringArray("idle", "running")]
+script = ExtResource("6_ton4o")
 idle = NodePath("../Idle")
 running = NodePath("../Running")
 
@@ -55,7 +64,9 @@ controller = NodePath("../Controller")
 speed = 10.0
 acceleration = 1.0
 gravity = 1.0
-jump_impulse = -20.0
+jump_impulse = 20.0
+jump_brake = 3.0
+air_control = 0.5
 
 [node name="Controller" type="Node" parent="." node_paths=PackedStringArray("pivot")]
 script = ExtResource("4_syg24")
