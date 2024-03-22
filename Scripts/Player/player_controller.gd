@@ -4,6 +4,8 @@ extends Node
 ## Player inputs
 
 
+signal move_vector_update(move_vector)
+
 @export var pivot: Node
 
 var move_vector: Vector3 = Vector3.ZERO
@@ -12,7 +14,9 @@ var is_moving: bool
 
 func _input(event):
 	move_vector.x = Input.get_axis("move_left", "move_right")
-	move_vector.z = Input.get_axis("move_forward", "move_backward")
+	move_vector.z = Input.get_axis("move_backward", "move_forward")
+	
+	move_vector_update.emit(move_vector)
 	
 	if move_vector != Vector3.ZERO:
 		is_moving = true

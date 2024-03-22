@@ -4,6 +4,7 @@ extends Node
 
 signal now_on_floor
 signal now_in_air
+signal velocity_update(target_velocity)
 
 @export var character: PlayerCharacter
 @export var controller: PlayerController
@@ -19,8 +20,18 @@ var target_velocity: Vector3 = Vector3.ZERO
 
 
 func accelerate():
-	target_velocity.x += controller.move_vector.x * acceleration
-	target_velocity.z += controller.move_vector.z * acceleration
+	var velocity = Vector3(character.velocity.x, 0, character.velocity.z)
+	var input = controller.move_vector.normalized()
+	
+	var desired = input * acceleration
+	var corrected = velocity.direction_to(desired) * acceleration * input
+	
+	target_velocity.x += corrected.x
+	target_velocity.z += corrected.z
+	
+	
+	#target_velocity.x += controller.move_vector.x * acceleration
+	#target_velocity.z += controller.move_vector.z * acceleration
 
 
 func gravitate():
@@ -32,6 +43,8 @@ func move():
 	var was_on_floor = character.is_on_floor()
 	
 	character.velocity = target_velocity
+	velocity_update.emit(target_velocity)
+	
 	character.move_and_slide()
 	
 	var is_on_floor = character.is_on_floor()

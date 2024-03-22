@@ -81,4 +81,43 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 9.56618)
 [node name="Debug" type="Node" parent="."]
 script = ExtResource("6_g6weh")
 
+[node name="DebugUI" type="Control" parent="Debug"]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Debug/DebugUI"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="State" type="Label" parent="Debug/DebugUI/VBoxContainer"]
+layout_mode = 2
+text = "OldState --> NewState"
+
+[node name="InAir" type="Label" parent="Debug/DebugUI/VBoxContainer"]
+layout_mode = 2
+
+[node name="Movement" type="VBoxContainer" parent="Debug/DebugUI/VBoxContainer"]
+layout_mode = 2
+
+[node name="Velocity" type="Label" parent="Debug/DebugUI/VBoxContainer/Movement"]
+layout_mode = 2
+text = "Velocity"
+
+[node name="Input" type="Label" parent="Debug/DebugUI/VBoxContainer/Movement"]
+layout_mode = 2
+
+[node name="Controller" type="VBoxContainer" parent="Debug/DebugUI/VBoxContainer"]
+layout_mode = 2
+
+[node name="MoveVector" type="Label" parent="Debug/DebugUI/VBoxContainer/Controller"]
+layout_mode = 2
+text = "MoveVector"
+
 [connection signal="state_changed" from="States" to="Debug" method="_on_states_state_changed"]
+[connection signal="now_in_air" from="Movement" to="Debug" method="_on_movement_now_in_air"]
+[connection signal="now_on_floor" from="Movement" to="Debug" method="_on_movement_now_on_floor"]
+[connection signal="velocity_update" from="Movement" to="Debug" method="_on_movement_velocity_update"]
+[connection signal="move_vector_update" from="Controller" to="Debug" method="_on_controller_move_vector_update"]
